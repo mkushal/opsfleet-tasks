@@ -5,7 +5,7 @@ This Proof of Concept (POC) demonstrates setting up Istio on an existing Amazon 
 ing on Kubernetes. The POC is designed to showcase how to secure communication between microservices using Istio capabilities.
 
 ## Step 1: Create an EKS Cluster
-You can create the EKS cluster using the AWS CLI or AWS Management Console. Below is a sample AWS CLI command:
+You can create the EKS cluster using the AWS CLI or AWS Management Console. 
 
 ## Step 2: Download & Install Istio
 
@@ -103,4 +103,27 @@ istioctl proxy-config cluster <pod-name> -n iversion --fqdn service-b.iversion.s
 
 Look for tls_context or mode: ISTIO_MUTUAL in the output, which indicates mTLS is enabled between service-a and service-b.
 
+Verify PeerAuthentication Policy
+
+Ensure there is a PeerAuthentication policy in place that enforces mTLS.
+
+```
+kubectl get peerauthentication -n iversion
+```
+Look for a PeerAuthentication resource with mtls mode set to STRICT, which will enforce mTLS within the iversion namespace.
+
+Verify DestinationRule for mTLS
+
+Check that there’s a DestinationRule with ISTIO_MUTUAL TLS mode for service-b:
+
+```
+kubectl get destinationrule -n iversion -o yaml
+```
+You should see a rule that applies ISTIO_MUTUAL mode for connections to service-b (or for all services in the namespace). Here’s an example of the expected output:
+
+```
+trafficPolicy:
+  tls:
+    mode: ISTIO_MUTUAL
+```
 
