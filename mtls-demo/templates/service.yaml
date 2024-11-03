@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-a
+  namespace: iversion
+spec:
+  selector:
+    app: service-a
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80  # Replace with the port on which service-a container listens
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-b
+  namespace: iversion
+spec:
+  selector:
+    app: service-b
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80  # Replace with the port on which service-b container listens
+
